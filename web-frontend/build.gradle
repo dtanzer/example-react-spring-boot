@@ -1,0 +1,30 @@
+buildscript {
+	ext {
+		springBootVersion = '1.3.0.RELEASE'
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+
+apply plugin: 'spring-boot'
+
+dependencies {
+	compile project(':common')
+
+	compile 'org.springframework.boot:spring-boot-starter'
+	compile 'org.springframework.boot:spring-boot-starter-web'
+	compile 'org.springframework.boot:spring-boot-starter-thymeleaf'
+}
+
+task clientDependenciesDev(type: Exec) {
+	commandLine 'npm', 'install', '--save', 'mocha', 'jsdom', 'react-addons-test-utils', 'chai', 'sinon', 'enzyme'
+}
+
+task clientDependencies(type: Exec, dependsOn: 'clientDependenciesDev') {
+	commandLine 'npm', 'install', '--save', 'react', 'react-dom', 'babelify', 'babel-core', 'babel-preset-react', 'babel-preset-es2015'
+}
+
+task browserify(type: Exec) {
+	commandLine 'browserify', '-t', '[', 'babelify', ']', 'src/main/javascript/main.js', '-o', 'src/main/resources/static/js/bundle.js'
+}

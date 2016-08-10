@@ -1,0 +1,20 @@
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<script th:if="${not bundleJavaScript}" src="https://jspm.io/system@0.19.js"></script>
+	</head>
+	<body>
+		<div id="example">Example...</div>
+
+		<!-- ******* Load bundled javascript (for production mode)             ******* -->
+		<!-- ******* or javascript modules via system.js (in development mode) ******* -->
+		<script th:if="${bundleJavaScript}" src="js/bundle.js"></script>
+		<script th:if="${not bundleJavaScript}">
+			System.config({
+				transpiler: 'babel',
+				babelOptions: {},
+			});
+			System.import('./main.js');
+		</script>
+		<!-- ************************************************************************* -->
+	</body>
+</html>
