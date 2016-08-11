@@ -20659,7 +20659,7 @@ var HeaderArea = exports.HeaderArea = function (_Component) {
 			return _react2.default.createElement(
 				'header',
 				null,
-				'Header... HEADER!'
+				'Header...'
 			);
 		}
 	}]);
