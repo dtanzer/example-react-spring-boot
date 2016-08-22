@@ -11,7 +11,8 @@
 		<script th:if="${not bundleJavaScript}">
 			System.config({
 				transpiler: 'babel',
-				babelOptions: {},
+				babelOptions: {
+				},
 			});
 			System.import('./main.js');
 		</script>

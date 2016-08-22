@@ -18,13 +18,21 @@ dependencies {
 }
 
 task clientDependenciesDev(type: Exec) {
-	commandLine 'npm', 'install', '--save', 'mocha', 'jsdom', 'react-addons-test-utils', 'chai', 'sinon', 'enzyme', 'flow-bin'
+	commandLine 'npm', 'install', '--save', 'mocha', 'mocha-cli', 'jsdom', 'react-addons-test-utils', 'chai', 'sinon', 'enzyme', 'flow-bin'
 }
 
 task clientDependencies(type: Exec, dependsOn: 'clientDependenciesDev') {
-	commandLine 'npm', 'install', '--save', 'react', 'react-dom', 'babelify', 'babel-core', 'babel-preset-react', 'babel-preset-es2015'
+	commandLine 'npm', 'install', '--save', 'react', 'react-dom', 'babelify', 'babel-core', 'babel-preset-react', 'babel-preset-es2015', 'babel-plugin-transform-flow-strip-types'
 }
 
 task browserify(type: Exec) {
 	commandLine 'browserify', '-t', '[', 'babelify', ']', 'src/main/javascript/main.js', '-o', 'src/main/resources/static/js/bundle.js'
+}
+
+task checkFlowTypes(type: Exec) {
+	commandLine 'node', 'node_modules/flow-bin/cli'
+}
+
+task runClientTests(type: Exec, dependsOn: 'checkFlowTypes') {
+	commandLine 'node', 'node_modules/mocha-cli/bin/mocha', '--require', 'babel-core/register', 'src/test/javascript/setup.js', 'src/test/javascript/**/*.spec.js'
 }
